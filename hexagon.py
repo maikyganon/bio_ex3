@@ -24,9 +24,14 @@ class HexagonTile:
     highlight_offset: int = 3
     max_highlight_ticks: int = 15
 
+    colours_array = [(255, 153, 153), (255, 204, 153), (255, 255, 153), (204, 255, 153), (153, 255, 255), (153, 153, 255), (0, 0, 255), (153, 51, 255), (255, 51, 255), (96, 96, 96)]
+
     def __post_init__(self):
         self.vertices = self.compute_vertices()
         self.highlight_tick = 0
+        self.alpha = 0.3
+        self.beta = 0.2
+        self.gama = 0.1
 
     def update(self):
         """Updates tile highlights"""
@@ -53,6 +58,11 @@ class HexagonTile:
         # could cache results for performance
         return [hexagon for hexagon in hexagons if self.is_neighbour(hexagon)]
 
+    def compute_neighbours_second_row(self, hexagons: List[HexagonTile]) -> List[HexagonTile]:
+        """Returns hexagons whose centres are two minimal radiuses away from self.centre"""
+        # could cache results for performance
+        return [hexagon for hexagon in hexagons if self.is_neighbour_second_row(hexagon)]
+
     def collide_with_point(self, point: Tuple[float, float]) -> bool:
         """Returns True if distance from centre to point is less than horizontal_length"""
         return math.dist(point, self.centre) < self.minimal_radius
@@ -63,6 +73,13 @@ class HexagonTile:
         """
         distance = math.dist(hexagon.centre, self.centre)
         return math.isclose(distance, 2 * self.minimal_radius, rel_tol=0.05)
+
+    def is_neighbour_second_row(self, hexagon: HexagonTile) -> bool:
+        """Returns True if hexagon centre is approximately
+        2 minimal radiuses away from own centre
+        """
+        distance = math.dist(hexagon.centre, self.centre)
+        return math.isclose(distance, 4 * self.minimal_radius, rel_tol=0.05)
 
     def render(self, screen) -> None:
         """Renders the hexagon on the screen"""
@@ -95,6 +112,19 @@ class HexagonTile:
 
     def addRepresentedVector(self,v):
         self.representedVector =v
+
+    def goTowardsVector(self, v, factor):
+        for i, field in enumerate(v):
+            self.representedVector[i] += factor * (v[i] - self.representedVector[i])
+
+    def updateHexagonVector(self, v):
+        neighbours_second_row = self.compute_neighbours_second_row()
+        neighbours_first_row = self.compute_neighbours()
+        self.goTowardsVector(v, self.beta)
+        for neighbour in neighbours_first_row:
+            neighbour.goTowardsVector(v, self.beta)
+        for neighbour in neighbours_second_row:
+            neighbour.goTowardsVector(v, self.gama)
 
 
 class FlatTopHexagonTile(HexagonTile):
