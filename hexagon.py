@@ -113,6 +113,10 @@ class HexagonTile:
     def addRepresentedVector(self,v):
         self.representedVector =v
 
+    def digit_2_colour(self, digit) -> Tuple[int, ...]:
+        """Returns a random RGB colour with each component between min_ and max_"""
+        return self.colours_array[digit - 1]
+
     def goTowardsVector(self, v, factor):
         for i, field in enumerate(v):
             self.representedVector[i] += factor * (v[i] - self.representedVector[i])
