@@ -49,9 +49,6 @@ def findClosestHexagonIndex(x, hexagons):
             minIndex=k
     return k
 
-def updateHexagonsVectors(hexagons,k,x):
-    pass
-
 
 def doEpoch(hexagons,inputsArr):
     for x in inputsArr:
