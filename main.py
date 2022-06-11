@@ -101,7 +101,7 @@ def main():
             if event.type == pygame.QUIT:
                 terminated = True
 
-
+        tools.doEpoch(hexagons,inputsArr)
         for hexagon in hexagons:
             hexagon.update()
 

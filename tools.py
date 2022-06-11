@@ -45,16 +45,21 @@ def findClosestHexagonIndex(x, hexagons):
     minIndex=0
     minDistance=sys.maxsize
     for k,hexagon in enumerate(hexagons):
-        if(distance(x,hexagon.representedVector) < minDistance):
+        temp = distance(x,hexagon.representedVector)
+        if(temp < minDistance):
+            minDistance = temp
             minIndex=k
-    return k
+    return minIndex
 
 
 def doEpoch(hexagons,inputsArr):
     for x in inputsArr:
         k = findClosestHexagonIndex(x, hexagons)
-        hexagons[k].updateHexagonVector(x)
-    return 0
+        hexagons[k].updateHexagonVector(x,hexagons)
+    for hexagon in hexagons:
+        hexagon.updateColour()
+        hexagon.isColourValid=0
+    return
 
 
 

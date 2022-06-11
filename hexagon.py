@@ -32,6 +32,7 @@ class HexagonTile:
         self.alpha = 0.3
         self.beta = 0.2
         self.gama = 0.1
+        self.isColourValid=0
 
     def update(self):
         """Updates tile highlights"""
@@ -121,14 +122,25 @@ class HexagonTile:
         for i, field in enumerate(v):
             self.representedVector[i] += factor * (v[i] - self.representedVector[i])
 
-    def updateHexagonVector(self, v):
-        neighbours_second_row = self.compute_neighbours_second_row()
-        neighbours_first_row = self.compute_neighbours()
-        self.goTowardsVector(v, self.beta)
+    def updateHexagonVector(self, v,hexagons):
+        self.isColourValid=1
+        neighbours_first_row = self.compute_neighbours(hexagons)
+        neighbours_second_row = []
+        for neighbour in neighbours_first_row:
+            neighbours_of_neighbour = neighbour.compute_neighbours(hexagons)
+            for n in neighbours_of_neighbour:
+                if ((not self.is_neighbour(n)) and (n not in neighbours_second_row) and n !=self):
+                    neighbours_second_row.append(n)
+        self.goTowardsVector(v, self.alpha)
         for neighbour in neighbours_first_row:
             neighbour.goTowardsVector(v, self.beta)
         for neighbour in neighbours_second_row:
             neighbour.goTowardsVector(v, self.gama)
+    def updateColour(self):
+        if (self.isColourValid==1):
+            self.colour=self.digit_2_colour(int(round(self.representedVector[0])))
+        else:
+            self.colour=(255,255,255)
 
 
 class FlatTopHexagonTile(HexagonTile):
