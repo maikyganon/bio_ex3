@@ -11,6 +11,7 @@ from typing import Tuple
 import pygame
 from hexagon import FlatTopHexagonTile
 from hexagon import HexagonTile
+import tools
 
 # pylint: disable=no-member
 
@@ -86,11 +87,20 @@ def main():
     screen = pygame.display.set_mode((1200, 800))
     clock = pygame.time.Clock()
     hexagons = init_hexagons(flat_top=False)
+    #
+    csvName = "Elec_24.csv"
+    inputsArr = tools.getArrOfVectorByCSVName(csvName)
+    tools.createAndAddRandomVectorToEachHexagon(hexagons,inputsArr)
+    #
+
+
+
     terminated = False
     while not terminated:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminated = True
+
 
         for hexagon in hexagons:
             hexagon.update()

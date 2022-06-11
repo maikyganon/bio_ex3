@@ -93,6 +93,9 @@ class HexagonTile:
         brighten = lambda x, y: x + y if x + y < 255 else 255
         return tuple(brighten(x, offset) for x in self.colour)
 
+    def addRepresentedVector(self,v):
+        self.representedVector =v
+
 
 class FlatTopHexagonTile(HexagonTile):
     def compute_vertices(self) -> List[Tuple[float, float]]:
