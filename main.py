@@ -16,7 +16,7 @@ import tools
 # pylint: disable=no-member
 
 
-def create_hexagon(position, radius=50, flat_top=False) -> HexagonTile:
+def create_hexagon(position, radius=30, flat_top=False) -> HexagonTile:
     """Creates a hexagon tile at the specified position"""
     class_ = FlatTopHexagonTile if flat_top else HexagonTile
     return class_(radius, position, colour=get_random_colour())
@@ -30,7 +30,7 @@ def get_random_colour(min_=150, max_=255) -> Tuple[int, ...]:
 def init_hexagons(num_x=4, num_y=9, flat_top=False) -> List[HexagonTile]:
     """Creates a hexaogonal tile map of size num_x * num_y"""
     # pylint: disable=invalid-name
-    leftmost_hexagon = create_hexagon(position=(250, 100), flat_top=flat_top)
+    leftmost_hexagon = create_hexagon(position=(200, 30), flat_top=flat_top)
     hexagons = [leftmost_hexagon]
     row = -1
 
@@ -70,38 +70,44 @@ def render(screen, hexagons):
         hexagon.render(screen)
 
     # draw borders around colliding hexagons and neighbours
-    mouse_pos = pygame.mouse.get_pos()
-    colliding_hexagons = [
-        hexagon for hexagon in hexagons if hexagon.collide_with_point(mouse_pos)
-    ]
-    for hexagon in colliding_hexagons:
-        for neighbour in hexagon.compute_neighbours(hexagons):
-            neighbour.render_highlight(screen, border_colour=(100, 100, 100))
-        hexagon.render_highlight(screen, border_colour=(0, 0, 0))
+    # mouse_pos = pygame.mouse.get_pos()
+    # colliding_hexagons = [
+    #     hexagon for hexagon in hexagons if hexagon.collide_with_point(mouse_pos)
+    # ]
+    # for hexagon in colliding_hexagons:
+    #     for neighbour in hexagon.compute_neighbours(hexagons):
+    #         neighbour.render_highlight(screen, border_colour=(100, 100, 100))
+    #     hexagon.render_highlight(screen, border_colour=(0, 0, 0))
     pygame.display.flip()
 
 
 def main():
     """Main function"""
     pygame.init()
-    screen = pygame.display.set_mode((1200, 800))
+    screen = pygame.display.set_mode((640, 480))
     clock = pygame.time.Clock()
     hexagons = init_hexagons(flat_top=False)
     #
     csvName = "Elec_24.csv"
     inputsArr = tools.getArrOfVectorByCSVName(csvName)
+    tools.Z_ScoreNormalization(inputsArr)
     tools.createAndAddRandomVectorToEachHexagon(hexagons,inputsArr)
     #
 
 
-
+    epochs=50
+    counter=0
     terminated = False
     while not terminated:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminated = True
+        if (counter<epochs):
+            tools.doEpoch(hexagons,inputsArr)
+            counter+=1
+            if counter == epochs:
+                print("Quantization Error:",tools.calcQuantErrorScore(hexagons))
 
-        tools.doEpoch(hexagons,inputsArr)
         for hexagon in hexagons:
             hexagon.update()
 

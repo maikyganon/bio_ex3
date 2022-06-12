@@ -29,10 +29,11 @@ class HexagonTile:
     def __post_init__(self):
         self.vertices = self.compute_vertices()
         self.highlight_tick = 0
-        self.alpha = 0.3
-        self.beta = 0.2
-        self.gama = 0.1
+        self.alpha = 0.6
+        self.beta = 0.4
+        self.gama = 0.2
         self.isColourValid=0
+        self.cluster = []
 
     def update(self):
         """Updates tile highlights"""
@@ -136,9 +137,15 @@ class HexagonTile:
             neighbour.goTowardsVector(v, self.beta)
         for neighbour in neighbours_second_row:
             neighbour.goTowardsVector(v, self.gama)
+
+    def getClusterAvgEconomics(self):
+        sum=0
+        for v in self.cluster:
+            sum+=v[0]
+        return sum/len(self.cluster)
     def updateColour(self):
         if (self.isColourValid==1):
-            self.colour=self.digit_2_colour(int(round(self.representedVector[0])))
+            self.colour=self.digit_2_colour(int(round(self.getClusterAvgEconomics())))
         else:
             self.colour=(255,255,255)
 
