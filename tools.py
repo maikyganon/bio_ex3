@@ -54,8 +54,9 @@ def getMinMaxVectorsOfInputs(inputsArr):
     return minVec,maxVec
 
 def createAndAddRandomVectorToEachHexagon(hexagons, inputsArr):
+    minVec, maxVec=getMinMaxVectorsOfInputs(inputsArr)
     for hexagon in hexagons:
-        hexagon.addRepresentedVector([random.uniform(0, 1) for i in range(len(inputsArr[0]))])
+        hexagon.addRepresentedVector([random.uniform(minVec[i], maxVec[i]) for i in range(len(inputsArr[0]))])
 
 def distance(v1,v2) -> int:
     sigmaVector = [(v2[k]-v1[k])**2 for k in range(len(v2))]
