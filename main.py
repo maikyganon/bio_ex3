@@ -86,34 +86,47 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((640, 480))
     clock = pygame.time.Clock()
-    hexagons = init_hexagons(flat_top=False)
     #
     csvName = "Elec_24.csv"
     inputsArr = tools.getArrOfVectorByCSVName(csvName)
     tools.norm_zero_to_one(inputsArr)
     tools.Z_ScoreNormalization(inputsArr)
-    tools.createAndAddRandomVectorToEachHexagon(hexagons,inputsArr)
-    #
+    solutions_and_scores = []
+    for iter in range(10):
+        hexagons = init_hexagons(flat_top=False)
+        tools.createAndAddRandomVectorToEachHexagon(hexagons,inputsArr)
+        #
+        epochs=50
+        counter=0
+        terminated = False
+        while not terminated:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    terminated = True
+            if (counter<epochs):
+                tools.doEpoch(hexagons,inputsArr)
+                counter+=1
+                if counter == epochs:
+                    score_quant = tools.calcQuantErrorScore(hexagons)
+                    solutions_and_scores.append([hexagons, score_quant])
+                    print("Quantization Error:",score_quant)
+                    terminated = True
 
+            for hexagon in hexagons:
+                hexagon.update()
 
-    epochs=50
-    counter=0
-    terminated = False
+            render(screen, hexagons)
+            clock.tick(50)
+    max_sol = solutions_and_scores[0]
+    for sol_and_score in solutions_and_scores:
+        if sol_and_score[1] > max_sol[1]:
+            max_sol = sol_and_score
+    for sol_and_score in solutions_and_scores:
     while not terminated:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminated = True
-        if (counter<epochs):
-            tools.doEpoch(hexagons,inputsArr)
-            counter+=1
-            if counter == epochs:
-                print("Quantization Error:",tools.calcQuantErrorScore(hexagons))
-
-        for hexagon in hexagons:
-            hexagon.update()
-
-        render(screen, hexagons)
-        clock.tick(50)
+        render(screen, max_sol[0])
     pygame.display.quit()
 
 
