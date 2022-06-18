@@ -90,6 +90,7 @@ def main():
     #
     csvName = "Elec_24.csv"
     inputsArr = tools.getArrOfVectorByCSVName(csvName)
+    tools.norm_zero_to_one(inputsArr)
     tools.Z_ScoreNormalization(inputsArr)
     tools.createAndAddRandomVectorToEachHexagon(hexagons,inputsArr)
     #

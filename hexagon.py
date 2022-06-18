@@ -29,9 +29,9 @@ class HexagonTile:
     def __post_init__(self):
         self.vertices = self.compute_vertices()
         self.highlight_tick = 0
-        self.alpha = 0.6
-        self.beta = 0.4
-        self.gama = 0.2
+        self.alpha = 0.3
+        self.beta = 0.2
+        self.gama = 0.1
         self.isColourValid=0
         self.cluster = []
 

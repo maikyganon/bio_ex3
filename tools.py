@@ -36,6 +36,11 @@ def Z_ScoreNormalization(inputsArr):
             inputsArr[i][j]=npInputsArr[i][j]
     return
 
+def norm_zero_to_one(inputsArr):
+    for arr in inputsArr:
+        for i,item in enumerate(arr):
+            if i > 1:
+                arr[i] = arr[i] / arr[1]
 
 def generateRandomNumberInLimitedRange(low,high):
     return random.sample(range(low, high+1), 1)[0]
@@ -54,7 +59,7 @@ def getMinMaxVectorsOfInputs(inputsArr):
     return minVec,maxVec
 
 def createAndAddRandomVectorToEachHexagon(hexagons, inputsArr):
-    minVec, maxVec=getMinMaxVectorsOfInputs(inputsArr)
+    minVec, maxVec = getMinMaxVectorsOfInputs(inputsArr)
     for hexagon in hexagons:
         hexagon.addRepresentedVector([random.uniform(minVec[i], maxVec[i]) for i in range(len(inputsArr[0]))])
 
