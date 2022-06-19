@@ -124,7 +124,7 @@ def calcQuantErrorScore(hexagons):
     return totalErr / countValidHexagons
 
 '''
-Shuffel the rows in inputsArr.
+Shuffle the rows in inputsArr.
 return new array.
 '''
 def shuffleRows(inputsArr):

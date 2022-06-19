@@ -16,7 +16,9 @@ import tools
 
 
 # pylint: disable=no-member
-
+'''
+These functions (except main) are part of HexagonTile which is an open source code we used.
+'''
 
 def create_hexagon(position, radius=30, flat_top=False) -> HexagonTile:
     """Creates a hexagon tile at the specified position"""
