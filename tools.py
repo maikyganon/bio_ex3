@@ -36,6 +36,10 @@ def Z_ScoreNormalization(inputsArr):
             inputsArr[i][j]=npInputsArr[i][j]
     return
 
+'''
+For every row in inputArr change the value of the elements to element divided by the second element in the row.
+the second element in the row is Total votes. 
+'''
 def norm_zero_to_one(inputsArr):
     for arr in inputsArr:
         for i,item in enumerate(arr):
@@ -71,8 +75,10 @@ def distance(v1,v2) -> int:
             sum+=field
     return sum
 
-
-
+'''
+This method returns the closest hexagon to the vector x.
+using the function distance.
+'''
 def findClosestHexagonIndex(x, hexagons):
     minIndex=0
     minDistance=sys.maxsize
@@ -83,6 +89,9 @@ def findClosestHexagonIndex(x, hexagons):
             minIndex=k
     return minIndex
 
+'''
+Calculate The average distance d between an input vector and the neuron that represents it.
+'''
 def calcQuantErrorScore(hexagons):
     totalErr = 0
     countValidHexagons = 0
@@ -95,6 +104,10 @@ def calcQuantErrorScore(hexagons):
             countValidHexagons += 1
     return totalErr / countValidHexagons
 
+'''
+Shuffel the rows in inputsArr.
+return new array.
+'''
 def shuffleRows(inputsArr):
     rowsNewOrder=random.sample(range(0,len(inputsArr)),len(inputsArr))
     newInputsArr=[]
@@ -102,6 +115,9 @@ def shuffleRows(inputsArr):
         newInputsArr.append(inputsArr[i])
     return newInputsArr
 
+'''
+All the logic's for every epoch
+'''
 def doEpoch(hexagons,inputsArr):
     for h in hexagons:
         h.cluster.clear()
@@ -113,22 +129,3 @@ def doEpoch(hexagons,inputsArr):
         hexagon.updateColour()
         hexagon.isColourValid=0
     return
-
-
-
-
-
-
-
-
-
-# raise an error because not all the fields are numbers !!
-# import numpy as np
-# def getArrOfVectorByCSVName(csvName):
-#     array=[]
-#     with open(csvName) as file_name:
-#         array = np.loadtxt(file_name, delimiter=",")
-#     print(array)
-#     return array
-
-

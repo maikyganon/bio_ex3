@@ -13,7 +13,9 @@ from typing import Tuple
 
 import pygame
 
-
+'''
+HexagonTile is an open source code we used.
+'''
 @dataclass
 class HexagonTile:
     """Hexagon class"""
@@ -149,7 +151,9 @@ class HexagonTile:
         else:
             self.colour=(255,255,255)
 
-
+'''
+FlatTopHexagonTile is an open source code we used.
+'''
 class FlatTopHexagonTile(HexagonTile):
     def compute_vertices(self) -> List[Tuple[float, float]]:
         """Returns a list of the hexagon's vertices as x, y tuples"""
