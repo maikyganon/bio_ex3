@@ -95,6 +95,12 @@ def calcQuantErrorScore(hexagons):
             countValidHexagons += 1
     return totalErr / countValidHexagons
 
+def shuffleRows(inputsArr):
+    rowsNewOrder=random.sample(range(0,len(inputsArr)),len(inputsArr))
+    newInputsArr=[]
+    for i in rowsNewOrder:
+        newInputsArr.append(inputsArr[i])
+    return newInputsArr
 
 def doEpoch(hexagons,inputsArr):
     for h in hexagons:

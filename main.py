@@ -9,9 +9,11 @@ from typing import List
 from typing import Tuple
 
 import pygame
+import matplotlib.pyplot as plt
 from hexagon import FlatTopHexagonTile
 from hexagon import HexagonTile
 import tools
+
 
 # pylint: disable=no-member
 
@@ -68,19 +70,11 @@ def render(screen, hexagons):
     screen.fill((0, 0, 0))
     for hexagon in hexagons:
         hexagon.render(screen)
-
-    # draw borders around colliding hexagons and neighbours
-    # mouse_pos = pygame.mouse.get_pos()
-    # colliding_hexagons = [
-    #     hexagon for hexagon in hexagons if hexagon.collide_with_point(mouse_pos)
-    # ]
-    # for hexagon in colliding_hexagons:
-    #     for neighbour in hexagon.compute_neighbours(hexagons):
-    #         neighbour.render_highlight(screen, border_colour=(100, 100, 100))
-    #     hexagon.render_highlight(screen, border_colour=(0, 0, 0))
     pygame.display.flip()
 
+'''
 
+'''
 def main():
     """Main function"""
     pygame.init()
@@ -94,9 +88,10 @@ def main():
     solutions_and_scores = []
     for iter in range(10):
         hexagons = init_hexagons(flat_top=False)
+        #inputsArr = tools.shuffleRows(inputsArr)
         tools.createAndAddRandomVectorToEachHexagon(hexagons,inputsArr)
         #
-        epochs=50
+        epochs=30
         counter=0
         terminated = False
         while not terminated:
@@ -121,7 +116,10 @@ def main():
     for sol_and_score in solutions_and_scores:
         if sol_and_score[1] > max_sol[1]:
             max_sol = sol_and_score
-    for sol_and_score in solutions_and_scores:
+    solutions_for_plot = [sol_and_score_i[1] for sol_and_score_i in solutions_and_scores ]
+    plt.plot([i+1 for i in range(10)], solutions_for_plot, color='r')
+    plt.show()
+    terminated = False
     while not terminated:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
