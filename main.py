@@ -73,7 +73,13 @@ def render(screen, hexagons):
     pygame.display.flip()
 
 '''
-
+Main function of the algorithm.
+first the data is being extracted from the csv to two dim array which is called inputsArr.
+later on, inputsArr is normalized with norm_zero_to_one and z_score functions.
+then the SOM alg will be running for 10 iterations, each iteration's quantization error and alg state are being kept
+for later comparison with other iterations.
+Each iteration runs for 30 epochs which are being displayed in pygame screen.
+After the 10th iteration the qunatization errors are being displaye with plot graph. 
 '''
 def main():
     """Main function"""

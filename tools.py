@@ -3,6 +3,9 @@ import random
 import sys
 import numpy as np
 
+'''
+extracts data from csv to two dimension array
+'''
 def getArrOfVectorByCSVName(csvName):
     #The returned array is 1d-array that its first index is an array of the cols.
     array=[]
@@ -16,6 +19,9 @@ def getArrOfVectorByCSVName(csvName):
         arrayOfArrays[k] = [int(x) for x in arr]
     return arrayOfArrays
 
+'''
+norms the inputsArr in MinMax method
+'''
 def normInputs(inputsArr):
     minVec, maxVec = getMinMaxVectorsOfInputs(inputsArr)
     for arr in inputsArr:
@@ -24,6 +30,9 @@ def normInputs(inputsArr):
                 arr[i] = (arr[i] - minVec[i]) / (maxVec[i] - minVec[i])
     print(inputsArr)
 
+'''
+norms the inputsArr in z_score method
+'''
 def Z_ScoreNormalization(inputsArr):
     npInputsArr=np.float32(np.array(inputsArr))
     epsilon = sys.float_info.epsilon
@@ -49,6 +58,12 @@ def norm_zero_to_one(inputsArr):
 def generateRandomNumberInLimitedRange(low,high):
     return random.sample(range(low, high+1), 1)[0]
 
+'''
+returns min and max vectors of the features in the vectors of inputsArr
+meaning that for inputsArr[[1,2,3],[0,1,50]]
+minVec=[0,1,3]
+maxVec=[1,2,50] 
+'''
 def getMinMaxVectorsOfInputs(inputsArr):
     maxVec=[0]*len(inputsArr[0])
     for arr in inputsArr:
@@ -67,6 +82,10 @@ def createAndAddRandomVectorToEachHexagon(hexagons, inputsArr):
     for hexagon in hexagons:
         hexagon.addRepresentedVector([random.uniform(minVec[i], maxVec[i]) for i in range(len(inputsArr[0]))])
 
+'''
+returns "almost" euclidean distance between two vectors-
+meaning, that the first two features are being ignored in the summation.
+'''
 def distance(v1,v2) -> int:
     sigmaVector = [(v2[k]-v1[k])**2 for k in range(len(v2))]
     sum=0
